@@ -1,7 +1,11 @@
+"use client";
 import Counter from "../components/Counter";
 import PersistentCounter from "../components/PersistentCounter";
+import TextStuff from "../components/TextStuff";
+import { useTextStore } from "../stores/textStore";
 
 export default function Home() {
+  const text = useTextStore((state) => state.text);
   return (
     <div className="min-h-screen py-8">
       <div className="container mx-auto px-4">
@@ -13,6 +17,9 @@ export default function Home() {
           <PersistentCounter />
         </div>
       </div>
+      <TextStuff />
+
+      <p className="text-4xl italic font-thin font-serif text-center mt-8">{text}</p>
     </div>
   );
 }
