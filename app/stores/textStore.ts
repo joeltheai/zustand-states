@@ -6,6 +6,6 @@ interface TextState {
 }
 
 export const useTextStore = create<TextState>((set) => ({
-    text: '',
+    text: 'sharing text between pages',
     setText: (text) => set({ text }),
 }))

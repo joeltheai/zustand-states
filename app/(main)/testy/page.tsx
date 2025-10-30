@@ -1,6 +1,7 @@
 "use client";
 import { useCounterStore } from "../../stores/counterStore";
 import { useTextStore } from "../../stores/textStore";
+import TextStuff from "@/app/components/TextStuff";
 
 export default function Page() {
   const { count } = useCounterStore();
@@ -25,6 +26,7 @@ export default function Page() {
         }}
       ></h1>
       Count: {count}
+      <TextStuff />
     </div>
   );
 }
