@@ -11,6 +11,7 @@ export default function RootLayout({
         <nav className="flex gap-4">
           <Link href="/">Home</Link>
           <Link href="/testy">Testy</Link>
+          <Link href="/idb-text">IndexedDB Text</Link>
         </nav>
       </div>
       {children}
