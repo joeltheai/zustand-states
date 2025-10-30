@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useTextStore } from "../stores/textStore";
 
 export default function TextStuff() {

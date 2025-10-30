@@ -1,11 +1,11 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 interface TextState {
-    text: string
-    setText: (text: string) => void
+  text: string;
+  setText: (text: string) => void;
 }
 
 export const useTextStore = create<TextState>((set) => ({
-    text: 'sharing text between pages',
-    setText: (text) => set({ text }),
-}))
+  text: "sharing text between pages",
+  setText: (text) => set({ text }),
+}));

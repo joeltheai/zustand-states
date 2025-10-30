@@ -19,7 +19,9 @@ export default function Home() {
       </div>
       <TextStuff />
 
-      <p className="text-4xl italic font-thin font-serif text-center mt-8">{text}</p>
+      <p className="text-4xl italic font-thin font-serif text-center mt-8">
+        {text}
+      </p>
     </div>
   );
 }
