@@ -83,12 +83,26 @@ const idbStorage = {
   removeItem: (name: string) => idbRemoveItem(name),
 };
 
+// Cross-tab realtime sync via BroadcastChannel (falls back to no-op if unavailable)
+const textChannel: BroadcastChannel | null =
+  typeof window !== "undefined" && "BroadcastChannel" in window
+    ? new BroadcastChannel("persistent-text-store")
+    : null;
+
 export const usePersistentTextStore = create<PersistentTextState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       text: "",
       _hasHydrated: false,
-      setText: (text) => set({ text }),
+      setText: (text) => {
+        set({ text });
+        // Broadcast to other tabs/pages
+        try {
+          textChannel?.postMessage({ type: "text:update", payload: text });
+        } catch {
+          // ignore broadcast errors
+        }
+      },
       setHasHydrated: (state) => set({ _hasHydrated: state }),
     }),
     {
@@ -96,6 +110,17 @@ export const usePersistentTextStore = create<PersistentTextState>()(
       storage: createJSONStorage(() => idbStorage),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
+        // Subscribe to BroadcastChannel after hydration
+        if (textChannel) {
+          textChannel.onmessage = (event: MessageEvent) => {
+            const data = event.data as { type?: string; payload?: unknown };
+            if (data && data.type === "text:update") {
+              const incoming = String(data.payload ?? "");
+              // Update without rebroadcasting (setText would rebroadcast)
+              usePersistentTextStore.setState({ text: incoming });
+            }
+          };
+        }
       },
     },
   ),
